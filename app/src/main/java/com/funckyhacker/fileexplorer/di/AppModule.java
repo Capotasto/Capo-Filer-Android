@@ -2,5 +2,5 @@ package com.funckyhacker.fileexplorer.di;
 
 import dagger.Module;
 
-@Module
+@Module(subcomponents = {MainComponent.class})
 public class AppModule {}
