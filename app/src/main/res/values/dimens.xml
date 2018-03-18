@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Element Spacing -->
+    <dimen name="element_spacing_xxlarge">32dp</dimen>
+    <dimen name="element_spacing_xlarge">24dp</dimen>
+    <dimen name="element_spacing_large">16dp</dimen>
+    <dimen name="element_spacing_xnormal">12dp</dimen>
+    <dimen name="element_spacing_normal">8dp</dimen>
+    <dimen name="element_spacing_xsmall">6dp</dimen>
+    <dimen name="element_spacing_small">4dp</dimen>
+
+    <!-- View Size -->
+    <dimen name="view_size_xxhuge">100dp</dimen>
+    <dimen name="view_size_xhuge">88dp</dimen>
+    <dimen name="view_size_huge">80dp</dimen>
+    <dimen name="view_size_xxlarge">72dp</dimen>
+    <dimen name="view_size_xlarge">64dp</dimen>
+    <dimen name="view_size_large">56dp</dimen>
+    <dimen name="view_size_normal">48dp</dimen>
+    <dimen name="view_size_small">36dp</dimen>
+    <dimen name="view_size_tiny">24dp</dimen>
+
+    <!-- Text Size -->
+    <dimen name="text_size_xxxlarge">28sp</dimen>
+    <dimen name="text_size_xxlarge">24sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_xmedium">17sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_xsmall">14sp</dimen>
+    <dimen name="text_size_xxsmall">12sp</dimen>
+    <dimen name="text_size_xxxsmall">10sp</dimen>
+
+</resources>

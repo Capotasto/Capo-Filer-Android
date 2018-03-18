@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">FileExplorer</string>
+
+    <string name="nav_menu_download">Download</string>
+    <string name="nav_menu_picture">Picture</string>
+    <string name="nav_menu_video">Video</string>
+    <string name="nav_menu_audio">Audio</string>
+    <string name="nav_menu_setting">Setting</string>
+
 </resources>
