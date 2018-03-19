@@ -1,5 +1,6 @@
 package com.funckyhacker.fileexplorer;
 
+import android.Manifest;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,11 +11,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.funckyhacker.fileexplorer.databinding.ActivityMainBinding;
+import com.funckyhacker.fileexplorer.util.FileUtils;
 import dagger.android.AndroidInjection;
 import javax.inject.Inject;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.RuntimePermissions;
 import timber.log.Timber;
 
+@RuntimePermissions
 public class MainActivity extends AppCompatActivity implements MainView {
 
   private ActivityMainBinding binding;
@@ -66,6 +75,27 @@ public class MainActivity extends AppCompatActivity implements MainView {
     });
   }
 
+  @Override protected void onStart() {
+    super.onStart();
+    MainActivityPermissionsDispatcher.enableAccessStorageWithPermissionCheck(this);
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    if (!FileUtils.isExternalStorageReadable() || !FileUtils.isExternalStorageWritable()) {
+      new MaterialDialog.Builder(this)
+          .positiveText(android.R.string.ok)
+          .negativeText(android.R.string.cancel)
+          .build();
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+  }
+
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     return super.onCreateOptionsMenu(menu);
   }
@@ -80,4 +110,21 @@ public class MainActivity extends AppCompatActivity implements MainView {
     return super.onOptionsItemSelected(item);
 
   }
+
+  @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
+  protected void enableAccessStorage() {
+
+  }
+
+  @OnPermissionDenied({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
+  protected void onStorageDenied() {
+    Toast.makeText(this, R.string.permission_storage_denied, Toast.LENGTH_SHORT).show();
+  }
+
+
+  @OnNeverAskAgain({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
+  protected void onStorageNeverAskAgain() {
+    Toast.makeText(this, R.string.permission_storage_never_ask_again, Toast.LENGTH_SHORT).show();
+  }
+
 }
