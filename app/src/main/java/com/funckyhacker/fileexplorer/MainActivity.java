@@ -48,9 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     binding.listView.setLayoutManager(new LinearLayoutManager(this));
     viewModel.init(this);
-
     initDrawer();
-
   }
 
   @Override protected void onStart() {

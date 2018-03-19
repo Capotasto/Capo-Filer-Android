@@ -89,6 +89,13 @@ dependencies {
     }
     annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$permissionVersion"
 
+    //Permission
+    implementation("com.github.hotchemi:permissionsdispatcher:$permissionVersion") {
+        // if you don't use android.app.Fragment you can exclude support for them
+        exclude module: "support-v13"
+    }
+    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$permissionVersion"
+
     testImplementation 'junit:junit:4.12'
 
     androidTestImplementation('com.android.support.test:runner:1.0.1') {
