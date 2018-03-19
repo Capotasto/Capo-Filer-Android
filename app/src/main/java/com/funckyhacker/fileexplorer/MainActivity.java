@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
   private ActivityMainBinding binding;
 
-  private MainAdapter adapter;
-
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     AndroidInjection.inject(this);
@@ -48,11 +46,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
     actionbar.setHomeButtonEnabled(true);
     actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
 
+    binding.listView.setLayoutManager(new LinearLayoutManager(this));
     viewModel.init(this);
-
     initDrawer();
-    initList();
-
   }
 
   @Override protected void onStart() {
@@ -71,7 +67,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
     String path = Environment.getExternalStorageDirectory().getPath();
     Timber.d(path);
     File directory = new File(path);
-    adapter.setData(new ArrayList<>(Arrays.asList(directory.listFiles())));
+    if (directory.listFiles() == null) {
+      return;
+    }
+    viewModel.setData(new ArrayList<>(Arrays.asList(directory.listFiles())));
   }
 
   @Override
@@ -93,12 +92,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     return super.onOptionsItemSelected(item);
 
-  }
-
-  private void initList() {
-    binding.listView.setLayoutManager(new LinearLayoutManager(this));
-    adapter = new MainAdapter();
-    binding.listView.setAdapter(adapter);
   }
 
   private void initDrawer() {
@@ -150,4 +143,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     Toast.makeText(this, R.string.permission_storage_never_ask_again, Toast.LENGTH_SHORT).show();
   }
 
+  @Override public void setAdapter(MainAdapter adapter) {
+    binding.listView.setAdapter(adapter);
+  }
 }
