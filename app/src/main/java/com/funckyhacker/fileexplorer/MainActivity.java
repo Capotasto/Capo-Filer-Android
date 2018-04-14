@@ -3,11 +3,13 @@ package com.funckyhacker.fileexplorer;
 import android.Manifest;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +18,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.funckyhacker.fileexplorer.databinding.ActivityMainBinding;
 import com.funckyhacker.fileexplorer.util.FileUtils;
 import dagger.android.AndroidInjection;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import javax.inject.Inject;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -26,9 +31,11 @@ import timber.log.Timber;
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity implements MainView {
 
+  @Inject MainViewModel viewModel;
+
   private ActivityMainBinding binding;
 
-  @Inject MainViewModel viewModel;
+  private MainAdapter adapter;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -43,6 +50,58 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     viewModel.init(this);
 
+    initDrawer();
+    initList();
+
+  }
+
+  @Override protected void onStart() {
+    super.onStart();
+    MainActivityPermissionsDispatcher.enableAccessStorageWithPermissionCheck(this);
+  }
+
+  @Override protected void onResume() {
+    super.onResume();
+    if (!FileUtils.isExternalStorageReadable() || !FileUtils.isExternalStorageWritable()) {
+      new MaterialDialog.Builder(this)
+          .positiveText(android.R.string.ok)
+          .negativeText(android.R.string.cancel)
+          .build();
+    }
+    String path = Environment.getExternalStorageDirectory().getPath();
+    Timber.d(path);
+    File directory = new File(path);
+    adapter.setData(new ArrayList<>(Arrays.asList(directory.listFiles())));
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+  }
+
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    return super.onCreateOptionsMenu(menu);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+    case android.R.id.home:
+      binding.drawerLayout.openDrawer(GravityCompat.START);
+      return true;
+    }
+
+    return super.onOptionsItemSelected(item);
+
+  }
+
+  private void initList() {
+    binding.listView.setLayoutManager(new LinearLayoutManager(this));
+    adapter = new MainAdapter();
+    binding.listView.setAdapter(adapter);
+  }
+
+  private void initDrawer() {
     binding.drawerLayout.addDrawerListener(new DrawerLayout.DrawerListener() {
 
       @Override public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -73,42 +132,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
       return true;
     });
-  }
-
-  @Override protected void onStart() {
-    super.onStart();
-    MainActivityPermissionsDispatcher.enableAccessStorageWithPermissionCheck(this);
-  }
-
-  @Override protected void onResume() {
-    super.onResume();
-    if (!FileUtils.isExternalStorageReadable() || !FileUtils.isExternalStorageWritable()) {
-      new MaterialDialog.Builder(this)
-          .positiveText(android.R.string.ok)
-          .negativeText(android.R.string.cancel)
-          .build();
-    }
-  }
-
-  @Override
-  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
-  }
-
-  @Override public boolean onCreateOptionsMenu(Menu menu) {
-    return super.onCreateOptionsMenu(menu);
-  }
-
-  @Override public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-    case android.R.id.home:
-      binding.drawerLayout.openDrawer(GravityCompat.START);
-      return true;
-    }
-
-    return super.onOptionsItemSelected(item);
-
   }
 
   @NeedsPermission({Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE})
