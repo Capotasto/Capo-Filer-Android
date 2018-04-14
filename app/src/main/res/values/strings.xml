@@ -7,4 +7,7 @@
     <string name="nav_menu_audio">Audio</string>
     <string name="nav_menu_setting">Setting</string>
 
+    <string name="permission_storage_denied">Storage access permissions were denied. Please consider granting it in order to access your data!</string>
+    <string name="permission_storage_never_ask_again">Storage access permissions were denied with never ask again.</string>
+
 </resources>
