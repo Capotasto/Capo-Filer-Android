@@ -3,7 +3,6 @@ package com.funckyhacker.fileexplorer;
 import android.support.annotation.DrawableRes;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -18,8 +17,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
   private List<File> files;
 
   @NonNull @Override public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    ItemMainLinearBinding linearBinding =
-        ItemMainLinearBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+    ItemMainLinearBinding linearBinding = ItemMainLinearBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
     return new ViewHolder(linearBinding);
   }
 
