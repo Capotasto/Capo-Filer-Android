@@ -1,13 +1,12 @@
 package com.funckyhacker.fileexplorer;
 
-import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.funckyhacker.fileexplorer.databinding.ItemMainLinearBinding;
-import eu.medsea.mimeutil.MimeUtil;
+import com.funckyhacker.fileexplorer.util.FileUtils;
 import java.io.File;
 import java.util.List;
 
@@ -16,8 +15,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
   private List<File> files;
 
   @NonNull @Override public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    ItemMainLinearBinding linearBinding =
-        ItemMainLinearBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+    ItemMainLinearBinding linearBinding = ItemMainLinearBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
     return new ViewHolder(linearBinding);
   }
 
@@ -54,11 +52,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
       binding.executePendingBindings();
     }
 
-    public Drawable getIconId() {
-      switch (MimeUtil.getExtension(file)) {
-      case "jpeg":
-      case "jpg":
-        return ContextCompat.getDrawable(this, R.drawable.ic_jpg);
+    @DrawableRes public int getIconId() {
+      switch (FileUtils.getMimeType(file)) {
+      case "jimage/peg":
+        return R.drawable.ic_jpg;
+      case "application/directory":
+        return R.drawable.ic_folder;
       default:
         return R.drawable.ic_unknown;
       }

@@ -2,8 +2,7 @@
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -30,15 +29,14 @@
             android:id="@+id/icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_jpg"
-            tools:src="@drawable/ic_jpg"
-            android:layout_marginStart="@dimen/element_spacing_normal"
-            android:layout_marginTop="@dimen/element_spacing_normal"
-            android:layout_marginBottom="@dimen/element_spacing_normal"
-            app:imageDrawabl="@{viewHolder.}"
+            android:layout_marginStart="@dimen/element_spacing_large"
+            android:layout_marginTop="@dimen/element_spacing_large"
+            android:layout_marginBottom="@dimen/element_spacing_large"
+            app:imageResource="@{viewHolder.iconId}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            tools:src="@drawable/ic_jpg"
             />
 
         <TextView
