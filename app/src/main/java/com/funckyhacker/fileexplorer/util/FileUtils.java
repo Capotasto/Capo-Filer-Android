@@ -1,6 +1,7 @@
 package com.funckyhacker.fileexplorer.util;
 
 import android.os.Environment;
+import eu.medsea.mimeutil.MimeUtil2;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -58,6 +59,12 @@ public class FileUtils {
       }
     }
     return files;
+  }
+
+  public static String getMimeType(File file) {
+    MimeUtil2 mimeUtil = new MimeUtil2();
+    mimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+    return MimeUtil2.getMostSpecificMimeType(mimeUtil.getMimeTypes(file)).toString();
   }
 
   /* Checks if external storage is available for read and write */

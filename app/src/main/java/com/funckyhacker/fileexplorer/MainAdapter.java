@@ -1,10 +1,12 @@
 package com.funckyhacker.fileexplorer;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.funckyhacker.fileexplorer.databinding.ItemMainLinearBinding;
+import com.funckyhacker.fileexplorer.util.FileUtils;
 import java.io.File;
 import java.util.List;
 
@@ -30,11 +32,13 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
   public void setData(List<File> files) {
     this.files = files;
+    notifyDataSetChanged();
   }
 
   public static class ViewHolder extends RecyclerView.ViewHolder {
 
     private final ItemMainLinearBinding binding;
+    private File file;
 
     public ViewHolder(ItemMainLinearBinding binding) {
       super(binding.getRoot());
@@ -42,7 +46,21 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     }
 
     public void bind(File file) {
-      binding.setName(file.getName());
+      this.file = file;
+      binding.setFile(file);
+      binding.setViewHolder(this);
+      binding.executePendingBindings();
+    }
+
+    @DrawableRes public int getIconId() {
+      switch (FileUtils.getMimeType(file)) {
+      case "jimage/peg":
+        return R.drawable.ic_jpg;
+      case "application/directory":
+        return R.drawable.ic_folder;
+      default:
+        return R.drawable.ic_unknown;
+      }
     }
   }
 }
