@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +47,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
     actionbar.setHomeButtonEnabled(true);
     actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
 
+    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
     binding.listView.setLayoutManager(new LinearLayoutManager(this));
+    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
+    binding.listView.addItemDecoration(dividerItemDecoration);
     viewModel.init(this);
 
     initDrawer();

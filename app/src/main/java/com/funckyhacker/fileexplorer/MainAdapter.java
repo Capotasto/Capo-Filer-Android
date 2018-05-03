@@ -1,12 +1,14 @@
 package com.funckyhacker.fileexplorer;
 
 import android.support.annotation.DrawableRes;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.funckyhacker.fileexplorer.databinding.ItemMainLinearBinding;
 import com.funckyhacker.fileexplorer.util.FileUtils;
+import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
 import java.util.List;
 
