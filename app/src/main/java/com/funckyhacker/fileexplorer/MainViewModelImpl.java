@@ -1,5 +1,6 @@
 package com.funckyhacker.fileexplorer;
 
+import android.support.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 import javax.inject.Inject;
@@ -19,7 +20,7 @@ public class MainViewModelImpl extends MainViewModel {
     view.setAdapter(adapter);
   }
 
-  @Override public void setData(List<File> files) {
+  @Override public void setData(@Nullable List<File> files) {
     adapter.setData(files);
   }
 }

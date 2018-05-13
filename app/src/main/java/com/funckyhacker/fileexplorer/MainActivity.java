@@ -20,8 +20,8 @@ import com.funckyhacker.fileexplorer.databinding.ActivityMainBinding;
 import com.funckyhacker.fileexplorer.util.FileUtils;
 import dagger.android.AndroidInjection;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import javax.inject.Inject;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
@@ -72,12 +72,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
           .build();
     }
     String path = Environment.getExternalStorageDirectory().getPath();
-    Timber.d(path);
-    File directory = new File(path);
-    if (directory.listFiles() == null) {
+    List<File> files = FileUtils.getFilesFromDir(new File(path));
+    if (files == null) {
       return;
     }
-    viewModel.setData(new ArrayList<>(Arrays.asList(directory.listFiles())));
+    viewModel.setData(files);
   }
 
   @Override
@@ -111,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
       @Override public void onDrawerOpened(@NonNull View drawerView) {
         Timber.d("onDrawerOpened");
 
+
       }
 
       @Override public void onDrawerClosed(@NonNull View drawerView) {
@@ -129,6 +129,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
       item.setChecked(true);
       // close drawer when item is tapped
       binding.drawerLayout.closeDrawers();
+      switch (item.getItemId()) {
+      case R.id.nav_download:
+        setFilesToList("Download");
+        break;
+      case R.id.nav_picture:
+        setFilesToList("Pictures");
+        break;
+      case R.id.nav_audio:
+        setFilesToList("Music");
+        break;
+      case R.id.nav_video:
+        setFilesToList("Movies");
+        break;
+      }
 
       return true;
     });
@@ -152,5 +166,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
   @Override public void setAdapter(MainAdapter adapter) {
     binding.listView.setAdapter(adapter);
+  }
+
+  private void setFilesToList(@NonNull String name) {
+    File download = FileUtils.getFilesFromName(name);
+    if (download == null) {
+      return;
+    }
+    viewModel.setData(Arrays.asList(download.listFiles()));
   }
 }

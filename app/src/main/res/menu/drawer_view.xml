@@ -2,22 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_download"
             android:icon="@drawable/ic_file_download_black_24dp"
             android:title="@string/nav_menu_download"
             />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_picture"
             android:icon="@drawable/ic_photo_library_black_24dp"
             android:title="@string/nav_menu_picture"
             />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_audio"
             android:icon="@drawable/ic_library_music_black_24dp"
             android:title="@string/nav_menu_audio"
             />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_video"
             android:icon="@drawable/ic_video_library_black_24dp"
             android:title="@string/nav_menu_video"
             />
