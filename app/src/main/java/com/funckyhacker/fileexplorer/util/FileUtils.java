@@ -1,6 +1,7 @@
 package com.funckyhacker.fileexplorer.util;
 
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import eu.medsea.mimeutil.MimeUtil2;
 import java.io.File;
 import java.math.BigDecimal;
@@ -46,19 +47,28 @@ public class FileUtils {
 
   /**
    * Return list of the file from external storage
-   * @param folder folder name
+   * @param file folder name
    * @return list of the file
    */
-  public static List<File> getFiles(String folder) {
-    List<File> files = new ArrayList<>();
+  public static List<File> getFilesFromDir(@NonNull File file) {
+    if (!file.isDirectory() || file.listFiles() == null) {
+      return null;
+    }
+    return new ArrayList<>(Arrays.asList(file.listFiles()));
+  }
+
+  public static File getFilesFromName(@NonNull String name) {
     String path = Environment.getExternalStorageDirectory().getPath();
-    File directory = new File(path);
-    for (File file : directory.listFiles()) {
-      if (file.getAbsolutePath().contains(folder)){
-        files = new ArrayList<>(Arrays.asList(file.listFiles()));
+    File rootDir = new File(path);
+    if (!rootDir.isDirectory() || rootDir.listFiles() == null || rootDir.listFiles().length <= 0) {
+      return null;
+    }
+    for (File file : rootDir.listFiles()) {
+      if(file.getAbsolutePath().contains(name)) {
+        return file;
       }
     }
-    return files;
+    return null;
   }
 
   public static String getMimeType(File file) {
