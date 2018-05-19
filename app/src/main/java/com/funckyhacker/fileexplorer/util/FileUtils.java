@@ -15,6 +15,8 @@ public class FileUtils {
   private static final double SIZE_MB = 1024 * 1024;
   private static final double SIZE_GB = 1024 * 1024 * 1024;
 
+  private static MimeUtil2 mimeUtil;
+
   /**
    * Return the String of file size with Unit
    *
@@ -57,9 +59,8 @@ public class FileUtils {
     return new ArrayList<>(Arrays.asList(file.listFiles()));
   }
 
-  public static File getFilesFromName(@NonNull String name) {
-    String path = Environment.getExternalStorageDirectory().getPath();
-    File rootDir = new File(path);
+  public static File getFilesFromName(@NonNull String root, @NonNull String name) {
+    File rootDir = new File(root);
     if (!rootDir.isDirectory() || rootDir.listFiles() == null || rootDir.listFiles().length <= 0) {
       return null;
     }
@@ -72,8 +73,11 @@ public class FileUtils {
   }
 
   public static String getMimeType(File file) {
-    MimeUtil2 mimeUtil = new MimeUtil2();
-    mimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+    if (mimeUtil == null) {
+      mimeUtil = new MimeUtil2();
+      //Tricky: This task is very heavy
+      mimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+    }
     return MimeUtil2.getMostSpecificMimeType(mimeUtil.getMimeTypes(file)).toString();
   }
 
