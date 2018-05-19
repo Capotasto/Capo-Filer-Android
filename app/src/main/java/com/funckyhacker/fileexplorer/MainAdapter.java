@@ -1,14 +1,12 @@
 package com.funckyhacker.fileexplorer;
 
 import android.support.annotation.DrawableRes;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.funckyhacker.fileexplorer.databinding.ItemMainLinearBinding;
 import com.funckyhacker.fileexplorer.util.FileUtils;
-import eu.medsea.mimeutil.MimeUtil;
 import java.io.File;
 import java.util.List;
 
@@ -56,10 +54,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @DrawableRes public int getIconId() {
       switch (FileUtils.getMimeType(file)) {
-      case "jimage/peg":
+      case "image/jpeg":
         return R.drawable.ic_jpg;
       case "application/directory":
         return R.drawable.ic_folder;
+      case "application/pdf":
+        return R.drawable.ic_pdf;
       default:
         return R.drawable.ic_unknown;
       }

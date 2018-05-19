@@ -36,6 +36,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
   private ActivityMainBinding binding;
 
+  private String rootPath;
+
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     AndroidInjection.inject(this);
@@ -71,8 +73,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
           .negativeText(android.R.string.cancel)
           .build();
     }
-    String path = Environment.getExternalStorageDirectory().getPath();
-    List<File> files = FileUtils.getFilesFromDir(new File(path));
+    rootPath = Environment.getExternalStorageDirectory().getPath();
+    List<File> files = FileUtils.getFilesFromDir(new File(rootPath));
     if (files == null) {
       return;
     }
@@ -131,16 +133,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
       binding.drawerLayout.closeDrawers();
       switch (item.getItemId()) {
       case R.id.nav_download:
-        setFilesToList("Download");
+        setFilesToList(Environment.DIRECTORY_DOWNLOADS);
         break;
       case R.id.nav_picture:
-        setFilesToList("Pictures");
+        setFilesToList(Environment.DIRECTORY_PICTURES);
         break;
       case R.id.nav_audio:
-        setFilesToList("Music");
+        setFilesToList(Environment.DIRECTORY_MUSIC);
         break;
       case R.id.nav_video:
-        setFilesToList("Movies");
+        setFilesToList(Environment.DIRECTORY_MOVIES);
         break;
       }
 
@@ -169,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
   }
 
   private void setFilesToList(@NonNull String name) {
-    File download = FileUtils.getFilesFromName(name);
+    File download = FileUtils.getFilesFromName(rootPath, name);
     if (download == null) {
       return;
     }
