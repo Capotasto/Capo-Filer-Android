@@ -1,7 +1,10 @@
 package com.funckyhacker.fileexplorer.util;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.webkit.MimeTypeMap;
 import eu.medsea.mimeutil.MimeUtil2;
 import java.io.File;
 import java.math.BigDecimal;
@@ -72,13 +75,19 @@ public class FileUtils {
     return null;
   }
 
-  public static String getMimeType(File file) {
-    if (mimeUtil == null) {
-      mimeUtil = new MimeUtil2();
-      //Tricky: This task is very heavy
-      mimeUtil.registerMimeDetector("eu.medsea.mimeutil.detector.MagicMimeMimeDetector");
+  public static String getMimeType(ContentResolver contentResolver, File file) {
+    if (file.isDirectory()) {
+      return "application/directory";
     }
-    return MimeUtil2.getMostSpecificMimeType(mimeUtil.getMimeTypes(file)).toString();
+    String mimeType;
+    if (Uri.fromFile(file).getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+      mimeType = contentResolver.getType(Uri.fromFile(file));
+    } else {
+      String fileExtension = MimeTypeMap.getFileExtensionFromUrl(file.getAbsolutePath());
+      mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+          fileExtension.toLowerCase());
+    }
+    return mimeType;
   }
 
   /* Checks if external storage is available for read and write */
