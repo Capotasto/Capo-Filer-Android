@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.funckyhacker.fileexplorer.databinding.ItemMainLinearBinding;
+import com.funckyhacker.fileexplorer.event.ClickItemEvent;
 import com.funckyhacker.fileexplorer.util.FileUtils;
 import java.io.File;
 import java.util.List;
+import org.greenrobot.eventbus.EventBus;
 
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
@@ -22,6 +24,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
   @Override public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
     holder.bind(files.get(position), holder.binding.getRoot().getContext().getContentResolver());
+    holder.binding.getRoot().setOnClickListener(v -> {
+      File file = files.get(position);
+      EventBus.getDefault().post(new ClickItemEvent(file));
+    });
   }
 
   @Override public int getItemCount() {

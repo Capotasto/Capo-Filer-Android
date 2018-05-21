@@ -1,8 +1,17 @@
 package com.funckyhacker.fileexplorer.di;
 
+import com.funckyhacker.fileexplorer.PageManger;
 import dagger.Module;
+import dagger.Provides;
+import javax.inject.Singleton;
 
 @Module(subcomponents = {
     MainComponent.class
 })
-public class AppModule {}
+public class AppModule {
+
+  @Singleton @Provides
+  public PageManger providePageManager() {
+    return new PageManger();
+  }
+}
