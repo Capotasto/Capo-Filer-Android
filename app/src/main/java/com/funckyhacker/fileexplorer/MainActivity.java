@@ -11,18 +11,22 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.funckyhacker.fileexplorer.databinding.ActivityMainBinding;
+import com.funckyhacker.fileexplorer.event.ClickItemEvent;
 import com.funckyhacker.fileexplorer.util.FileUtils;
 import dagger.android.AndroidInjection;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
@@ -33,10 +37,11 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity implements MainView {
 
   @Inject MainViewModel viewModel;
+  @Inject PageManger pageManger;
 
   private ActivityMainBinding binding;
 
-  private String rootPath;
+  private String currentPath;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -62,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
   @Override protected void onStart() {
     super.onStart();
+    EventBus.getDefault().register(this);
     MainActivityPermissionsDispatcher.enableAccessStorageWithPermissionCheck(this);
   }
 
@@ -73,12 +79,30 @@ public class MainActivity extends AppCompatActivity implements MainView {
           .negativeText(android.R.string.cancel)
           .build();
     }
-    rootPath = Environment.getExternalStorageDirectory().getPath();
-    List<File> files = FileUtils.getFilesFromDir(new File(rootPath));
+    if (TextUtils.isEmpty(currentPath)) {
+      currentPath = Environment.getExternalStorageDirectory().getPath();
+    }
+    List<File> files = FileUtils.getFilesFromDir(new File(currentPath));
     if (files == null) {
       return;
     }
     viewModel.setData(files);
+  }
+
+  @Override public void onBackPressed() {
+    if (pageManger.size() == 0) {
+      super.onBackPressed();
+      return;
+    }
+    currentPath = pageManger.pop();
+    File file = new File(currentPath);
+    viewModel.setData(Arrays.asList(file.listFiles()));
+  }
+
+  @Override
+  public void onStop() {
+    super.onStop();
+    EventBus.getDefault().unregister(this);
   }
 
   @Override
@@ -100,6 +124,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     return super.onOptionsItemSelected(item);
 
+  }
+
+  @Subscribe
+  public void onClickItemEvent(ClickItemEvent event) {
+    if (event.file.isDirectory()) {
+      //Show Next List
+      pageManger.push(currentPath);
+      currentPath = event.file.getAbsolutePath();
+      viewModel.setData(Arrays.asList(event.file.listFiles()));
+    }
   }
 
   private void initDrawer() {
@@ -171,10 +205,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
   }
 
   private void setFilesToList(@NonNull String name) {
-    File download = FileUtils.getFilesFromName(rootPath, name);
-    if (download == null) {
+    File file = FileUtils.getFilesFromName(name);
+    if (file == null) {
       return;
     }
-    viewModel.setData(Arrays.asList(download.listFiles()));
+    pageManger.push(currentPath);
+    currentPath = file.getAbsolutePath();
+    viewModel.setData(Arrays.asList(file.listFiles()));
   }
 }

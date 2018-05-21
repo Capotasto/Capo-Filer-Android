@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.webkit.MimeTypeMap;
-import eu.medsea.mimeutil.MimeUtil2;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -17,8 +16,6 @@ public class FileUtils {
   private static final double SIZE_KB = 1024;
   private static final double SIZE_MB = 1024 * 1024;
   private static final double SIZE_GB = 1024 * 1024 * 1024;
-
-  private static MimeUtil2 mimeUtil;
 
   /**
    * Return the String of file size with Unit
@@ -62,8 +59,8 @@ public class FileUtils {
     return new ArrayList<>(Arrays.asList(file.listFiles()));
   }
 
-  public static File getFilesFromName(@NonNull String root, @NonNull String name) {
-    File rootDir = new File(root);
+  public static File getFilesFromName(@NonNull String name) {
+    File rootDir = new File(Environment.getExternalStorageDirectory().getPath());
     if (!rootDir.isDirectory() || rootDir.listFiles() == null || rootDir.listFiles().length <= 0) {
       return null;
     }
@@ -86,6 +83,9 @@ public class FileUtils {
       String fileExtension = MimeTypeMap.getFileExtensionFromUrl(file.getAbsolutePath());
       mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
           fileExtension.toLowerCase());
+    }
+    if (mimeType == null) {
+      return "";
     }
     return mimeType;
   }
