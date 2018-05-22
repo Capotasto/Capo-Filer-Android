@@ -9,5 +9,6 @@
 
     <string name="permission_storage_denied">Storage access permissions were denied. Please consider granting it in order to access your data!</string>
     <string name="permission_storage_never_ask_again">Storage access permissions were denied with never ask again.</string>
+    <string name="no_files">No files</string>
 
 </resources>

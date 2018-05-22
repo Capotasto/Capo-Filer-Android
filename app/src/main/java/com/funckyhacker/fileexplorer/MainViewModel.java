@@ -23,4 +23,6 @@ public abstract class MainViewModel extends BaseObservable {
   public abstract void setFilesToList(@NonNull File file);
 
   public abstract void popItem();
+
+  @Bindable public abstract boolean isNoFiles();
 }
