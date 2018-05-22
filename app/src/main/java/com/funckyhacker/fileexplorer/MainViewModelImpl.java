@@ -14,6 +14,7 @@ public class MainViewModelImpl extends MainViewModel {
   private MainAdapter adapter;
   private String currentPath;
   private PageManger pageManger;
+  private boolean isNoFiles;
 
   @Inject
   public MainViewModelImpl(PageManger pageManger) {
@@ -27,6 +28,7 @@ public class MainViewModelImpl extends MainViewModel {
   }
 
   @Override public void setData(@Nullable List<File> files) {
+    setNofiles(files == null || files.isEmpty());
     adapter.setData(files);
   }
 
@@ -63,5 +65,14 @@ public class MainViewModelImpl extends MainViewModel {
     setCurrentPath(pageManger.pop());
     File file = new File(getCurrentPath());
     setData(Arrays.asList(file.listFiles()));
+  }
+
+  @Override public boolean isNoFiles() {
+    return isNoFiles;
+  }
+
+  public void setNofiles(boolean noFiles) {
+    isNoFiles = noFiles;
+    notifyPropertyChanged(BR.noFiles);
   }
 }
