@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.funckyhacker.fileexplorer.MainViewModel"
+            />
+
+    </data>
 
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
@@ -12,29 +21,55 @@
         android:fitsSystemWindows="true"
         >
 
-        <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
-        <android.support.constraint.ConstraintLayout
-
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:context="com.funckyhacker.fileexplorer.MainActivity"
+            android:background="@android:color/background_light"
+            android:fitsSystemWindows="true"
             >
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/tool_bar"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/main_appbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                android:elevation="4dp"
+                android:layout_height="wrap_content"
                 android:theme="@style/AppToolbar"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                />
+                >
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/tool_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?android:attr/actionBarSize"
+                    android:background="@color/colorPrimary"
+                    app:layout_scrollFlags="scroll|enterAlways|snap"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_scrollFlags="enterAlways"
+                    >
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="?android:attr/actionBarSize"
+                        android:gravity="center_vertical"
+                        android:text="@{viewModel.currentPath}"
+                        android:textSize="@dimen/text_size_small"
+                        android:paddingStart="@dimen/element_spacing_large"
+                        android:paddingEnd="@dimen/element_spacing_large"
+                        tools:text="android/0/disc/orient/col/1/2/"
+                        />
+
+                </LinearLayout>
+
+            </android.support.design.widget.AppBarLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="?attr/actionBarSize"
                 app:layoutManager="android.support.v7.widget.LinearLayoutManager"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintTop_toBottomOf="@+id/tool_bar"
@@ -43,7 +78,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 />
 
-        </android.support.constraint.ConstraintLayout>
+        </android.support.design.widget.CoordinatorLayout>
 
         <!-- Container for contents of drawer - use NavigationView to make configuration easier -->
         <android.support.design.widget.NavigationView

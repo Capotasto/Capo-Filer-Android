@@ -22,7 +22,6 @@ import com.funckyhacker.fileexplorer.event.ClickItemEvent;
 import com.funckyhacker.fileexplorer.util.FileUtils;
 import dagger.android.AndroidInjection;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -37,17 +36,14 @@ import timber.log.Timber;
 public class MainActivity extends AppCompatActivity implements MainView {
 
   @Inject MainViewModel viewModel;
-  @Inject PageManger pageManger;
 
   private ActivityMainBinding binding;
-
-  private String currentPath;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     AndroidInjection.inject(this);
     binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
-
+    binding.setViewModel(viewModel);
     setSupportActionBar(binding.toolBar);
     ActionBar actionbar = getSupportActionBar();
     actionbar.setDisplayHomeAsUpEnabled(true);
@@ -79,10 +75,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
           .negativeText(android.R.string.cancel)
           .build();
     }
-    if (TextUtils.isEmpty(currentPath)) {
-      currentPath = Environment.getExternalStorageDirectory().getPath();
+    if (TextUtils.isEmpty(viewModel.getCurrentPath())) {
+       viewModel.setCurrentPath(Environment.getExternalStorageDirectory().getPath());
     }
-    List<File> files = FileUtils.getFilesFromDir(new File(currentPath));
+    List<File> files = FileUtils.getFilesFromDir(new File(viewModel.getCurrentPath()));
     if (files == null) {
       return;
     }
@@ -90,13 +86,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
   }
 
   @Override public void onBackPressed() {
-    if (pageManger.size() == 0) {
+    if (viewModel.getPageSize() == 0) {
       super.onBackPressed();
       return;
     }
-    currentPath = pageManger.pop();
-    File file = new File(currentPath);
-    viewModel.setData(Arrays.asList(file.listFiles()));
+    viewModel.popItem();
   }
 
   @Override
@@ -129,10 +123,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
   @Subscribe
   public void onClickItemEvent(ClickItemEvent event) {
     if (event.file.isDirectory()) {
-      //Show Next List
-      pageManger.push(currentPath);
-      currentPath = event.file.getAbsolutePath();
-      viewModel.setData(Arrays.asList(event.file.listFiles()));
+      viewModel.setFilesToList(event.file);
     }
   }
 
@@ -167,16 +158,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
       binding.drawerLayout.closeDrawers();
       switch (item.getItemId()) {
       case R.id.nav_download:
-        setFilesToList(Environment.DIRECTORY_DOWNLOADS);
+        viewModel.setFilesToList(Environment.DIRECTORY_DOWNLOADS);
         break;
       case R.id.nav_picture:
-        setFilesToList(Environment.DIRECTORY_PICTURES);
+        viewModel.setFilesToList(Environment.DIRECTORY_PICTURES);
         break;
       case R.id.nav_audio:
-        setFilesToList(Environment.DIRECTORY_MUSIC);
+        viewModel.setFilesToList(Environment.DIRECTORY_MUSIC);
         break;
       case R.id.nav_video:
-        setFilesToList(Environment.DIRECTORY_MOVIES);
+        viewModel.setFilesToList(Environment.DIRECTORY_MOVIES);
         break;
       }
 
@@ -202,15 +193,5 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
   @Override public void setAdapter(MainAdapter adapter) {
     binding.listView.setAdapter(adapter);
-  }
-
-  private void setFilesToList(@NonNull String name) {
-    File file = FileUtils.getFilesFromName(name);
-    if (file == null) {
-      return;
-    }
-    pageManger.push(currentPath);
-    currentPath = file.getAbsolutePath();
-    viewModel.setData(Arrays.asList(file.listFiles()));
   }
 }
