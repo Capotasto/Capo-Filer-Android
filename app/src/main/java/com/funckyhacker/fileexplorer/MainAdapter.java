@@ -62,26 +62,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
     }
 
     @DrawableRes public int getIconId() {
-      switch (FileUtils.getMimeType(resolver, file)) {
-      case "image/jpeg":
-        return R.drawable.ic_jpg;
-      case "application/directory":
-        return R.drawable.ic_folder;
-      case "application/pdf":
-        return R.drawable.ic_pdf;
-      case "audio/mp4":
-      case "video/mp4":
-      case "application/mp4":
-        return R.drawable.ic_mp4;
-      case "audio/mpeg":
-        return R.drawable.ic_mp3;
-      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
-        return R.drawable.ic_xls;
-      case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-        return R.drawable.ic_doc;
-      default:
-        return R.drawable.ic_unknown;
-      }
+      return FileUtils.getFileIconRes(resolver, file);
     }
   }
 }

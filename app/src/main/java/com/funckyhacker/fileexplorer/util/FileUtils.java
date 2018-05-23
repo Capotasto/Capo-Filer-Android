@@ -3,8 +3,10 @@ package com.funckyhacker.fileexplorer.util;
 import android.content.ContentResolver;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.webkit.MimeTypeMap;
+import com.funckyhacker.fileexplorer.R;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -107,5 +109,28 @@ public class FileUtils {
       return true;
     }
     return false;
+  }
+
+  @DrawableRes public static int getFileIconRes(ContentResolver resolver, File file) {
+    switch (FileUtils.getMimeType(resolver, file)) {
+    case "image/jpeg":
+      return R.drawable.ic_jpg;
+    case "application/directory":
+      return R.drawable.ic_folder;
+    case "application/pdf":
+      return R.drawable.ic_pdf;
+    case "audio/mp4":
+    case "video/mp4":
+    case "application/mp4":
+      return R.drawable.ic_mp4;
+    case "audio/mpeg":
+      return R.drawable.ic_mp3;
+    case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+      return R.drawable.ic_xls;
+    case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      return R.drawable.ic_doc;
+    default:
+      return R.drawable.ic_unknown;
+    }
   }
 }

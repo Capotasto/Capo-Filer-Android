@@ -1,7 +1,11 @@
 package com.funckyhacker.fileexplorer;
 
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import com.funckyhacker.fileexplorer.util.FileUtils;
 import java.io.File;
 import java.util.Arrays;
@@ -28,7 +32,7 @@ public class MainViewModelImpl extends MainViewModel {
   }
 
   @Override public void setData(@Nullable List<File> files) {
-    setNofiles(files == null || files.isEmpty());
+    setNoFiles(files == null || files.isEmpty());
     adapter.setData(files);
   }
 
@@ -71,7 +75,19 @@ public class MainViewModelImpl extends MainViewModel {
     return isNoFiles;
   }
 
-  public void setNofiles(boolean noFiles) {
+  @Override public void sendIntent(ContentResolver resolver, File file) {
+    String mimeType = FileUtils.getMimeType(resolver, file);
+    if (TextUtils.isEmpty(mimeType)) {
+      view.showSnackBar("Couldn't show the preview: " + file.getName());
+      return;
+    }
+    Intent pictureActionIntent = new Intent();
+    pictureActionIntent.setAction(Intent.ACTION_VIEW);
+    pictureActionIntent.setDataAndType(Uri.fromFile(file), mimeType);
+    view.startActivity(pictureActionIntent);
+  }
+
+  public void setNoFiles(boolean noFiles) {
     isNoFiles = noFiles;
     notifyPropertyChanged(BR.noFiles);
   }

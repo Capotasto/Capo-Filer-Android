@@ -1,10 +1,12 @@
 package com.funckyhacker.fileexplorer;
 
 import android.Manifest;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -124,7 +126,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
   public void onClickItemEvent(ClickItemEvent event) {
     if (event.file.isDirectory()) {
       viewModel.setFilesToList(event.file);
+      return;
     }
+    viewModel.sendIntent(getContentResolver(), event.file);
   }
 
   private void initDrawer() {
@@ -193,5 +197,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
   @Override public void setAdapter(MainAdapter adapter) {
     binding.listView.setAdapter(adapter);
+  }
+
+  @Override public void startActivity(Intent intent) {
+    super.startActivity(intent);
+  }
+
+  @Override public void showSnackBar(String message) {
+    Snackbar snackbar = Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT);
+    snackbar.show();
   }
 }
