@@ -75,16 +75,17 @@ public class MainViewModelImpl extends MainViewModel {
     return isNoFiles;
   }
 
-  @Override public void sendIntent(ContentResolver resolver, File file) {
+  @Override public void sendIntent(ContentResolver resolver, File file, Uri uri) {
     String mimeType = FileUtils.getMimeType(resolver, file);
     if (TextUtils.isEmpty(mimeType)) {
       view.showSnackBar("Couldn't show the preview: " + file.getName());
       return;
     }
-    Intent pictureActionIntent = new Intent();
-    pictureActionIntent.setAction(Intent.ACTION_VIEW);
-    pictureActionIntent.setDataAndType(Uri.fromFile(file), mimeType);
-    view.startActivity(pictureActionIntent);
+    Intent intent = new Intent();
+    intent.setAction(Intent.ACTION_VIEW);
+    intent.setDataAndType(uri, mimeType);
+    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    view.startActivity(intent);
   }
 
   public void setNoFiles(boolean noFiles) {

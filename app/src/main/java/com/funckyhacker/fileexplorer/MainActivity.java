@@ -3,10 +3,12 @@ package com.funckyhacker.fileexplorer;
 import android.Manifest;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -128,7 +130,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
       viewModel.setFilesToList(event.file);
       return;
     }
-    viewModel.sendIntent(getContentResolver(), event.file);
+    Uri apkURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", event.file);
+    viewModel.sendIntent(getContentResolver(), event.file, apkURI);
   }
 
   private void initDrawer() {
