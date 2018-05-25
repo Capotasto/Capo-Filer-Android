@@ -1,6 +1,7 @@
 package com.funckyhacker.fileexplorer;
 
 import android.Manifest;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -203,7 +204,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
   }
 
   @Override public void startActivity(Intent intent) {
-    super.startActivity(intent);
+    try {
+      super.startActivity(intent);
+    } catch (ActivityNotFoundException e) {
+      showSnackBar("Couldn't show the preview for this file.");
+    }
   }
 
   @Override public void showSnackBar(String message) {
