@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.funckyhacker.fileexplorer.databinding.ItemMainLinearBinding;
 import com.funckyhacker.fileexplorer.event.ClickItemEvent;
+import com.funckyhacker.fileexplorer.util.DateUtils;
 import com.funckyhacker.fileexplorer.util.FileUtils;
 import java.io.File;
 import java.util.List;
@@ -63,6 +64,10 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
 
     @DrawableRes public int getIconId() {
       return FileUtils.getFileIconRes(resolver, file);
+    }
+
+    public String getModified() {
+      return DateUtils.getItemDate(file.lastModified());
     }
   }
 }
