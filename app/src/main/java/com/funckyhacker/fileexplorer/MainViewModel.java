@@ -1,7 +1,9 @@
 package com.funckyhacker.fileexplorer;
 
+import android.content.ContentResolver;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import java.io.File;
 import java.util.List;
@@ -25,4 +27,6 @@ public abstract class MainViewModel extends BaseObservable {
   public abstract void popItem();
 
   @Bindable public abstract boolean isNoFiles();
+
+  public abstract void sendIntent(ContentResolver resolver, File file, Uri uri);
 }
