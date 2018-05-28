@@ -30,7 +30,7 @@
             android:layout_marginStart="@dimen/element_spacing_large"
             android:layout_marginTop="@dimen/element_spacing_large"
             android:layout_marginBottom="@dimen/element_spacing_large"
-            app:imageResource="@{viewHolder.iconId}"
+            app:file="@{file}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
