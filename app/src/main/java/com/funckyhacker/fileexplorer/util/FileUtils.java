@@ -115,6 +115,8 @@ public class FileUtils {
     switch (FileUtils.getMimeType(resolver, file)) {
     case "image/jpeg":
       return R.drawable.ic_jpg;
+    case "image/png":
+      return R.drawable.ic_png;
     case "application/directory":
       return R.drawable.ic_folder;
     case "application/pdf":
@@ -125,10 +127,14 @@ public class FileUtils {
       return R.drawable.ic_mp4;
     case "audio/mpeg":
       return R.drawable.ic_mp3;
+    case "application/vnd.ms-excel":
     case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
       return R.drawable.ic_xls;
+    case "application/msword":
     case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
       return R.drawable.ic_doc;
+    case "text/plain":
+      return R.drawable.ic_text;
     default:
       return R.drawable.ic_unknown;
     }

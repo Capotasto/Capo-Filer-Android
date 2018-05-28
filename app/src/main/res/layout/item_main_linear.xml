@@ -30,7 +30,7 @@
             android:layout_marginStart="@dimen/element_spacing_large"
             android:layout_marginTop="@dimen/element_spacing_large"
             android:layout_marginBottom="@dimen/element_spacing_large"
-            app:imageResource="@{viewHolder.iconId}"
+            app:file="@{file}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -39,15 +39,19 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="@{file.name}"
             android:layout_marginStart="@dimen/element_spacing_large"
             android:layout_marginTop="@dimen/element_spacing_normal"
+            android:layout_marginEnd="@dimen/element_spacing_normal"
             android:textSize="@dimen/text_size_medium"
+            android:ellipsize="end"
+            android:maxLines="2"
             app:layout_constraintStart_toEndOf="@+id/icon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/date"
+            app:layout_constraintEnd_toEndOf="parent"
             tools:text="test.jpg"
             />
 
@@ -58,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/icon"
             android:layout_marginBottom="8dp"
-            android:text="Jan 22, 1970"
+            android:text="@{viewHolder.modified}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/title"
