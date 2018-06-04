@@ -15,9 +15,11 @@ import javax.inject.Inject;
 public class MainViewModelImpl extends MainViewModel {
 
   private MainView view;
-  private MainAdapter adapter;
+  private MainAdapter linearAdapter;
+  private MainGridAdapter gridAdapter;
   private String currentPath;
   private PageManger pageManger;
+  private int layoutType;
   private boolean isNoFiles;
 
   @Inject
@@ -27,13 +29,15 @@ public class MainViewModelImpl extends MainViewModel {
 
   @Override public void init(MainView view) {
     this.view = view;
-    adapter = new MainAdapter();
-    view.setAdapter(adapter);
+    linearAdapter = new MainAdapter();
+    gridAdapter = new MainGridAdapter();
+    view.setAdapter(linearAdapter);
   }
 
   @Override public void setData(@Nullable List<File> files) {
     setNoFiles(files == null || files.isEmpty());
-    adapter.setData(files);
+    linearAdapter.setData(files);
+    gridAdapter.setData(files);
   }
 
   @Override public String getCurrentPath() {
@@ -86,6 +90,22 @@ public class MainViewModelImpl extends MainViewModel {
     intent.setDataAndType(uri, mimeType);
     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
     view.startActivity(intent);
+  }
+
+  @Override public int getLayoutType() {
+    return layoutType;
+  }
+
+  @Override public void setLayoutType(int type) {
+    this.layoutType = type;
+  }
+
+  @Override public MainAdapter getLinearAdapter() {
+    return linearAdapter;
+  }
+
+  @Override public MainGridAdapter getGridAdapter() {
+    return gridAdapter;
   }
 
   public void setNoFiles(boolean noFiles) {

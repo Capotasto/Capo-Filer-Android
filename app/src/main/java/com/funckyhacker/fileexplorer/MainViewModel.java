@@ -29,4 +29,13 @@ public abstract class MainViewModel extends BaseObservable {
   @Bindable public abstract boolean isNoFiles();
 
   public abstract void sendIntent(ContentResolver resolver, File file, Uri uri);
+
+  public abstract int getLayoutType();
+
+  public abstract void setLayoutType(int type);
+
+  public abstract MainAdapter getLinearAdapter();
+
+  public abstract MainGridAdapter getGridAdapter();
+
 }

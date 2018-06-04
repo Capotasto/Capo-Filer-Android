@@ -9,15 +9,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -40,9 +43,14 @@ import timber.log.Timber;
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity implements MainView {
 
+  public static final int LAYOUT_LIST = 0;
+  public static final int LAYOUT_GRID = 1;
+
   @Inject MainViewModel viewModel;
 
   private ActivityMainBinding binding;
+  private Menu menu;
+  private LinearLayoutManager linearLayoutManager;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -55,9 +63,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
     actionbar.setHomeButtonEnabled(true);
     actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
 
-    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
-    binding.listView.setLayoutManager(new LinearLayoutManager(this));
+    viewModel.setLayoutType(LAYOUT_LIST);
+    linearLayoutManager = new LinearLayoutManager(this);
+    binding.listView.setLayoutManager(linearLayoutManager);
     DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
     binding.listView.addItemDecoration(dividerItemDecoration);
     viewModel.init(this);
@@ -111,7 +119,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
-    return super.onCreateOptionsMenu(menu);
+    this.menu = menu;
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.menu_main, menu);
+    return true;
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -119,8 +130,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
     case android.R.id.home:
       binding.drawerLayout.openDrawer(GravityCompat.START);
       return true;
+    case R.id.switch_layout:
+      if (viewModel.getLayoutType() == LAYOUT_LIST) {
+        menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_module_black_24dp));
+        viewModel.setLayoutType(LAYOUT_GRID);
+        binding.listView.setLayoutManager(new GridLayoutManager(this, 3));
+        binding.listView.setAdapter(viewModel.getGridAdapter());
+        return true;
+      }
+      menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_list_black_24dp));
+      viewModel.setLayoutType(LAYOUT_LIST);
+      binding.listView.setLayoutManager(linearLayoutManager);
+      binding.listView.setAdapter(viewModel.getLinearAdapter());
+      return true;
     }
-
     return super.onOptionsItemSelected(item);
 
   }

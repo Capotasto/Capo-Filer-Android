@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/switch_layout"
+        android:icon="@drawable/ic_view_module_black_24dp"
+        android:title="@string/menu_layout"
+        app:showAsAction="always"
+        />
+
+    <!-- menu group -->
+    <group android:id="@+id/group_delete">
+        <item android:id="@+id/menu_sort_by_name"
+            android:title="@string/menu_sort_by_name" />
+        <item android:id="@+id/menu_sort_by_date"
+            android:title="@string/menu_sort_by_date" />
+    </group>
+
+</menu>
