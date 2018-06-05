@@ -8,6 +8,7 @@
     <dimen name="element_spacing_normal">8dp</dimen>
     <dimen name="element_spacing_xsmall">6dp</dimen>
     <dimen name="element_spacing_small">4dp</dimen>
+    <dimen name="element_spacing_tiny">2dp</dimen>
 
     <!-- View Size -->
     <dimen name="view_size_xxhuge">100dp</dimen>

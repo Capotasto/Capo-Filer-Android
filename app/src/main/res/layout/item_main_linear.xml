@@ -21,6 +21,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/White"
         >
 
         <ImageView
@@ -63,6 +64,7 @@
             android:layout_toEndOf="@+id/icon"
             android:layout_marginBottom="8dp"
             android:text="@{viewHolder.modified}"
+            android:textColor="@color/Gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/title"
             app:layout_constraintTop_toBottomOf="@+id/title"
