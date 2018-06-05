@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
   private ActivityMainBinding binding;
   private Menu menu;
   private LinearLayoutManager linearLayoutManager;
+  private DividerItemDecoration dividerItemDecoration;
 
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -62,16 +63,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
     actionbar.setDisplayHomeAsUpEnabled(true);
     actionbar.setHomeButtonEnabled(true);
     actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp);
-
-    viewModel.setLayoutType(LAYOUT_LIST);
     linearLayoutManager = new LinearLayoutManager(this);
-    binding.listView.setLayoutManager(linearLayoutManager);
-    DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
-    binding.listView.addItemDecoration(dividerItemDecoration);
+    setLinearLayoutManager();
     viewModel.init(this);
-
     initDrawer();
-
   }
 
   @Override protected void onStart() {
@@ -133,15 +128,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
     case R.id.switch_layout:
       if (viewModel.getLayoutType() == LAYOUT_LIST) {
         menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_module_black_24dp));
-        viewModel.setLayoutType(LAYOUT_GRID);
-        binding.listView.setLayoutManager(new GridLayoutManager(this, 3));
-        binding.listView.setAdapter(viewModel.getGridAdapter());
+        setGridLayoutManager();
         return true;
       }
       menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_list_black_24dp));
-      viewModel.setLayoutType(LAYOUT_LIST);
-      binding.listView.setLayoutManager(linearLayoutManager);
-      binding.listView.setAdapter(viewModel.getLinearAdapter());
+      setLinearLayoutManager();
       return true;
     }
     return super.onOptionsItemSelected(item);
@@ -237,5 +228,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
   @Override public void showSnackBar(String message) {
     Snackbar snackbar = Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_SHORT);
     snackbar.show();
+  }
+
+  private void setLinearLayoutManager() {
+    viewModel.setLayoutType(LAYOUT_LIST);
+    binding.listView.setLayoutManager(linearLayoutManager);
+    binding.listView.setAdapter(viewModel.getLinearAdapter());
+    dividerItemDecoration = new DividerItemDecoration(this, linearLayoutManager.getOrientation());
+    binding.listView.addItemDecoration(dividerItemDecoration);
+  }
+
+  private void setGridLayoutManager() {
+    viewModel.setLayoutType(LAYOUT_GRID);
+    binding.listView.setLayoutManager(new GridLayoutManager(this, 3));
+    binding.listView.setAdapter(viewModel.getGridAdapter());
+    binding.listView.removeItemDecoration(dividerItemDecoration);
   }
 }
