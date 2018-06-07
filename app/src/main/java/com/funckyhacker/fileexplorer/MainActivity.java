@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
@@ -77,6 +78,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
   @Override protected void onResume() {
     super.onResume();
+    viewModel.setData(getRootFiles());
+  }
+
+  @Nullable private List<File> getRootFiles() {
     if (!FileUtils.isExternalStorageReadable() || !FileUtils.isExternalStorageWritable()) {
       new MaterialDialog.Builder(this)
           .positiveText(android.R.string.ok)
@@ -84,13 +89,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
           .build();
     }
     if (TextUtils.isEmpty(viewModel.getCurrentPath())) {
-       viewModel.setCurrentPath(Environment.getExternalStorageDirectory().getPath());
+      viewModel.setCurrentPath(Environment.getExternalStorageDirectory().getPath());
     }
     List<File> files = FileUtils.getFilesFromDir(new File(viewModel.getCurrentPath()));
-    if (files == null) {
-      return;
-    }
-    viewModel.setData(files);
+    return files;
   }
 
   @Override public void onBackPressed() {
@@ -126,17 +128,26 @@ public class MainActivity extends AppCompatActivity implements MainView {
       binding.drawerLayout.openDrawer(GravityCompat.START);
       return true;
     case R.id.switch_layout:
+      MenuItem switchMenu = menu.getItem(0);
       if (viewModel.getLayoutType() == LAYOUT_LIST) {
-        menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_module_black_24dp));
+        switchMenu.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_module_black_24dp));
         setGridLayoutManager();
         return true;
       }
-      menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_list_black_24dp));
+      switchMenu.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_list_black_24dp));
       setLinearLayoutManager();
       return true;
+    case R.id.menu_sort_by_name: {
+      viewModel.setData(FileUtils.getSortedListByName(getRootFiles()));
+      return true;
     }
-    return super.onOptionsItemSelected(item);
-
+    case R.id.menu_sort_by_date: {
+      viewModel.setData(FileUtils.getSortedListByDate(getRootFiles()));
+      return true;
+    }
+    default:
+      return true;
+    }
   }
 
   @Subscribe

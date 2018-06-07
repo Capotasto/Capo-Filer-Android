@@ -11,7 +11,9 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import org.apache.commons.io.comparator.NameFileComparator;
 
 public class FileUtils {
 
@@ -67,7 +69,7 @@ public class FileUtils {
       return null;
     }
     for (File file : rootDir.listFiles()) {
-      if(file.getAbsolutePath().contains(name)) {
+      if (file.getAbsolutePath().contains(name)) {
         return file;
       }
     }
@@ -83,8 +85,7 @@ public class FileUtils {
       mimeType = contentResolver.getType(Uri.fromFile(file));
     } else {
       String fileExtension = MimeTypeMap.getFileExtensionFromUrl(file.getAbsolutePath());
-      mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-          fileExtension.toLowerCase());
+      mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
     }
     if (mimeType == null) {
       return "";
@@ -104,11 +105,24 @@ public class FileUtils {
   /* Checks if external storage is available to at least read */
   public static boolean isExternalStorageReadable() {
     String state = Environment.getExternalStorageState();
-    if (Environment.MEDIA_MOUNTED.equals(state) ||
-        Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+    if (Environment.MEDIA_MOUNTED.equals(state) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
       return true;
     }
     return false;
+  }
+
+  public static List<File> getSortedListByName(List<File> files) {
+    if (files != null) {
+      Collections.sort(files, NameFileComparator.NAME_COMPARATOR);
+    }
+    return files;
+  }
+
+  public static List<File> getSortedListByDate(List<File> files) {
+    if (files != null) {
+      Collections.sort(files, (o1, o2) -> o1.lastModified() > o2.lastModified() ? -1 : 1);
+    }
+    return files;
   }
 
   @DrawableRes public static int getFileIconRes(ContentResolver resolver, File file) {
