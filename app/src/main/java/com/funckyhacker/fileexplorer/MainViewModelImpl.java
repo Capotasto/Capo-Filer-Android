@@ -15,12 +15,13 @@ import javax.inject.Inject;
 public class MainViewModelImpl extends MainViewModel {
 
   private MainView view;
-  private MainAdapter linearAdapter;
+  private MainLinearAdapter linearAdapter;
   private MainGridAdapter gridAdapter;
   private String currentPath;
   private PageManger pageManger;
   private int layoutType;
   private boolean isNoFiles;
+  private boolean isSearchMode;
 
   @Inject
   public MainViewModelImpl(PageManger pageManger) {
@@ -29,7 +30,7 @@ public class MainViewModelImpl extends MainViewModel {
 
   @Override public void init(MainView view) {
     this.view = view;
-    linearAdapter = new MainAdapter();
+    linearAdapter = new MainLinearAdapter();
     gridAdapter = new MainGridAdapter();
     view.setAdapter(linearAdapter);
   }
@@ -100,7 +101,15 @@ public class MainViewModelImpl extends MainViewModel {
     this.layoutType = type;
   }
 
-  @Override public MainAdapter getLinearAdapter() {
+  @Override public boolean isSearchMode() {
+    return isSearchMode;
+  }
+
+  @Override public void setSearchMode(boolean isSearchMode) {
+    this.isSearchMode = isSearchMode;
+  }
+
+  @Override public MainLinearAdapter getLinearAdapter() {
     return linearAdapter;
   }
 

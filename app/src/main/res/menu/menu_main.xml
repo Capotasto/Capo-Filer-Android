@@ -6,7 +6,14 @@
         android:id="@+id/switch_layout"
         android:icon="@drawable/ic_view_module_black_24dp"
         android:title="@string/menu_layout"
-        app:showAsAction="always"
+        app:showAsAction="ifRoom"
+        />
+
+    <item
+        android:id="@+id/menu_search"
+        android:icon="@drawable/ic_search_black_24dp"
+        android:title="@string/menu_search"
+        app:showAsAction="ifRoom"
         />
 
     <!-- menu group -->
@@ -20,5 +27,4 @@
             android:title="@string/menu_sort_by_date"
             />
     </group>
-
 </menu>

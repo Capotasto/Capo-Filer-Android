@@ -13,7 +13,7 @@
 
         <variable
             name="viewHolder"
-            type="com.funckyhacker.fileexplorer.MainAdapter.ViewHolder"
+            type="com.funckyhacker.fileexplorer.MainLinearAdapter.ViewHolder"
             />
 
     </data>

@@ -10,6 +10,8 @@
     <string name="menu_popup_menu">popup</string>
     <string name="menu_sort_by_name">Sort by Name</string>
     <string name="menu_sort_by_date">Sort by Date</string>
+    <string name="menu_search">Search</string>
+
 
     <string name="permission_storage_denied">Storage access permissions were denied. Please consider granting it in order to access your data!</string>
     <string name="permission_storage_never_ask_again">Storage access permissions were denied with never ask again.</string>

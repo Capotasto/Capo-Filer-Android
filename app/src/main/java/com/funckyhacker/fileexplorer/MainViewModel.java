@@ -34,7 +34,11 @@ public abstract class MainViewModel extends BaseObservable {
 
   public abstract void setLayoutType(int type);
 
-  public abstract MainAdapter getLinearAdapter();
+  public abstract boolean isSearchMode();
+
+  public abstract void setSearchMode(boolean isSearchMode);
+
+  public abstract MainLinearAdapter getLinearAdapter();
 
   public abstract MainGridAdapter getGridAdapter();
 

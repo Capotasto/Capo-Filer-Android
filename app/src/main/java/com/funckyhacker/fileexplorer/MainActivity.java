@@ -29,8 +29,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.funckyhacker.fileexplorer.databinding.ActivityMainBinding;
 import com.funckyhacker.fileexplorer.event.ClickItemEvent;
 import com.funckyhacker.fileexplorer.util.FileUtils;
+import com.funckyhacker.fileexplorer.view.search.SearchActivity;
 import dagger.android.AndroidInjection;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 import javax.inject.Inject;
 import org.greenrobot.eventbus.EventBus;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
   public static final int LAYOUT_LIST = 0;
   public static final int LAYOUT_GRID = 1;
+  private static final int REQUEST = 1;
 
   @Inject MainViewModel viewModel;
 
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     setLinearLayoutManager();
     viewModel.init(this);
     initDrawer();
+    viewModel.setData(getRootFiles());
   }
 
   @Override protected void onStart() {
@@ -78,21 +82,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
   @Override protected void onResume() {
     super.onResume();
-    viewModel.setData(getRootFiles());
-  }
-
-  @Nullable private List<File> getRootFiles() {
-    if (!FileUtils.isExternalStorageReadable() || !FileUtils.isExternalStorageWritable()) {
-      new MaterialDialog.Builder(this)
-          .positiveText(android.R.string.ok)
-          .negativeText(android.R.string.cancel)
-          .build();
-    }
-    if (TextUtils.isEmpty(viewModel.getCurrentPath())) {
-      viewModel.setCurrentPath(Environment.getExternalStorageDirectory().getPath());
-    }
-    List<File> files = FileUtils.getFilesFromDir(new File(viewModel.getCurrentPath()));
-    return files;
   }
 
   @Override public void onBackPressed() {
@@ -130,11 +119,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
     case R.id.switch_layout:
       MenuItem switchMenu = menu.getItem(0);
       if (viewModel.getLayoutType() == LAYOUT_LIST) {
-        switchMenu.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_module_black_24dp));
+        switchMenu.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_list_black_24dp));
         setGridLayoutManager();
         return true;
       }
-      switchMenu.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_list_black_24dp));
+      switchMenu.setIcon(ContextCompat.getDrawable(this, R.drawable.ic_view_module_black_24dp));
       setLinearLayoutManager();
       return true;
     case R.id.menu_sort_by_name: {
@@ -145,9 +134,25 @@ public class MainActivity extends AppCompatActivity implements MainView {
       viewModel.setData(FileUtils.getSortedListByDate(getRootFiles()));
       return true;
     }
+    case R.id.menu_search:
+      startActivityForResult(SearchActivity.createIntent(this), REQUEST);
+      return true;
     default:
       return true;
     }
+  }
+
+  @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode != REQUEST || resultCode != RESULT_OK) {
+      return;
+    }
+    File file = (File) data.getExtras().getSerializable(SearchActivity.EXTRA_FILE);
+    if (file == null) {
+      return;
+    }
+    viewModel.setFilesToList(viewModel.getCurrentPath());
+    viewModel.setData(Arrays.asList(file.listFiles()));
   }
 
   @Subscribe
@@ -158,6 +163,20 @@ public class MainActivity extends AppCompatActivity implements MainView {
     }
     Uri apkURI = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", event.file);
     viewModel.sendIntent(getContentResolver(), event.file, apkURI);
+  }
+
+  @Nullable private List<File> getRootFiles() {
+    if (!FileUtils.isExternalStorageReadable() || !FileUtils.isExternalStorageWritable()) {
+      new MaterialDialog.Builder(this)
+          .positiveText(android.R.string.ok)
+          .negativeText(android.R.string.cancel)
+          .build();
+    }
+    if (TextUtils.isEmpty(viewModel.getCurrentPath())) {
+      viewModel.setCurrentPath(Environment.getExternalStorageDirectory().getPath());
+    }
+    List<File> files = FileUtils.getFilesFromDir(new File(viewModel.getCurrentPath()));
+    return files;
   }
 
   private void initDrawer() {
@@ -224,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     Toast.makeText(this, R.string.permission_storage_never_ask_again, Toast.LENGTH_SHORT).show();
   }
 
-  @Override public void setAdapter(MainAdapter adapter) {
+  @Override public void setAdapter(MainLinearAdapter adapter) {
     binding.listView.setAdapter(adapter);
   }
 
