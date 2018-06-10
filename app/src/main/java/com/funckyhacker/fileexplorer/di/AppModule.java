@@ -6,7 +6,8 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(subcomponents = {
-    MainComponent.class
+    MainComponent.class,
+    SearchComponent.class
 })
 public class AppModule {
 

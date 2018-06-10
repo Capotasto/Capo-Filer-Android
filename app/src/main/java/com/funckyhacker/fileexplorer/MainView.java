@@ -4,7 +4,7 @@ import android.content.Intent;
 
 public interface MainView {
 
-  void setAdapter(MainAdapter adapter);
+  void setAdapter(MainLinearAdapter adapter);
 
   void startActivity(Intent intent);
 

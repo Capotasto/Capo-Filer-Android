@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.List;
 import org.greenrobot.eventbus.EventBus;
 
-public class MainAdapter extends RecyclerView.Adapter<MainAdapter.ViewHolder> {
+public class MainLinearAdapter extends RecyclerView.Adapter<MainLinearAdapter.ViewHolder> {
 
   private List<File> files;
 
