@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 27
@@ -48,6 +50,7 @@ ext {
     okhttpVersion = '3.9.1'
     daggerVersion = '2.15'
     permissionVersion = '3.1.0'
+    glideVersion = '4.7.1'
 }
 
 dependencies {
@@ -67,10 +70,10 @@ dependencies {
 
     //Dagger
     implementation "com.google.dagger:dagger:$daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
     implementation "com.google.dagger:dagger-android:$daggerVersion"
     implementation "com.google.dagger:dagger-android-support:$daggerVersion"
-    annotationProcessor "com.google.dagger:dagger-android-processor:$daggerVersion"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
     // Timber
     implementation 'com.jakewharton.timber:timber:4.6.0'
@@ -84,15 +87,15 @@ dependencies {
     //EventBus
     implementation 'org.greenrobot:eventbus:3.1.1'
     //Glide
-    implementation 'com.github.bumptech.glide:glide:4.7.1'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     //Permission
     implementation("com.github.hotchemi:permissionsdispatcher:$permissionVersion") {
         // if you don't use android.app.Fragment you can exclude support for them
         exclude module: "support-v13"
     }
-    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:$permissionVersion"
+    kapt "com.github.hotchemi:permissionsdispatcher-processor:$permissionVersion"
 
     testImplementation 'junit:junit:4.12'
 
@@ -100,4 +103,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     }
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+}
+repositories {
+    mavenCentral()
 }
