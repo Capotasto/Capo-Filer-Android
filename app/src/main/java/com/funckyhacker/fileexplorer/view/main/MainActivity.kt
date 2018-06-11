@@ -81,11 +81,10 @@ class MainActivity : AppCompatActivity(), MainView {
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeButtonEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
-        linearLayoutManager = LinearLayoutManager(this)
-        setLinearLayoutManager()
         viewModel.init(this)
-        initDrawer()
         viewModel.setData(rootFiles)
+        setLinearLayoutManager()
+        initDrawer()
     }
 
     override fun onStart() {
@@ -250,6 +249,9 @@ class MainActivity : AppCompatActivity(), MainView {
 
     private fun setLinearLayoutManager() {
         viewModel.layoutType = LAYOUT_LIST
+        if (linearLayoutManager == null){
+            linearLayoutManager = LinearLayoutManager(this)
+        }
         binding!!.listView.layoutManager = linearLayoutManager
         binding!!.listView.adapter = viewModel.linearAdapter
         dividerItemDecoration = DividerItemDecoration(this, linearLayoutManager!!.orientation)
