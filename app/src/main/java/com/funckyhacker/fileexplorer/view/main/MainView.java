@@ -1,6 +1,7 @@
-package com.funckyhacker.fileexplorer;
+package com.funckyhacker.fileexplorer.view.main;
 
 import android.content.Intent;
+import com.funckyhacker.fileexplorer.view.adapter.MainLinearAdapter;
 
 public interface MainView {
 

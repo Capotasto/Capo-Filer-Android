@@ -1,4 +1,4 @@
-package com.funckyhacker.fileexplorer
+package com.funckyhacker.fileexplorer.view.main
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -22,9 +22,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.afollestad.materialdialogs.MaterialDialog
+import com.funckyhacker.fileexplorer.R
 import com.funckyhacker.fileexplorer.databinding.ActivityMainBinding
 import com.funckyhacker.fileexplorer.event.ClickItemEvent
 import com.funckyhacker.fileexplorer.util.FileUtils
+import com.funckyhacker.fileexplorer.view.adapter.MainLinearAdapter
 import com.funckyhacker.fileexplorer.view.search.SearchActivity
 import dagger.android.AndroidInjection
 import org.greenrobot.eventbus.EventBus
@@ -157,7 +159,7 @@ class MainActivity : AppCompatActivity(), MainView {
             Timber.w("Check onActivityResult")
             return
         }
-        val file = data.extras.getSerializable(SearchActivity.EXTRA_FILE) as File ?: return
+        val file = data.extras.getSerializable(SearchActivity.EXTRA_FILE) as File
         viewModel.setFilesToList(viewModel.currentPath)
         viewModel.setData(Arrays.asList(*file.listFiles()))
     }

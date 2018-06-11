@@ -2,7 +2,7 @@ package com.funckyhacker.fileexplorer.view.search;
 
 import android.os.Environment;
 import android.text.TextUtils;
-import com.funckyhacker.fileexplorer.MainLinearAdapter;
+import com.funckyhacker.fileexplorer.view.adapter.MainLinearAdapter;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.funckyhacker.fileexplorer.MainViewModel"
+            type="com.funckyhacker.fileexplorer.view.main.MainViewModel"
             />
 
     </data>

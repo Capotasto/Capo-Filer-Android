@@ -1,10 +1,12 @@
-package com.funckyhacker.fileexplorer;
+package com.funckyhacker.fileexplorer.view.main;
 
 import android.content.ContentResolver;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import com.funckyhacker.fileexplorer.view.adapter.MainGridAdapter;
+import com.funckyhacker.fileexplorer.view.adapter.MainLinearAdapter;
 import java.io.File;
 import java.util.List;
 

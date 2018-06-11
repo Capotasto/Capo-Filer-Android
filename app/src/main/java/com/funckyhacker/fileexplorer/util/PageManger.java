@@ -1,4 +1,4 @@
-package com.funckyhacker.fileexplorer;
+package com.funckyhacker.fileexplorer.util;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

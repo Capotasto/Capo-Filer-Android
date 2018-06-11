@@ -5,8 +5,8 @@ import android.databinding.BindingAdapter;
 import android.net.Uri;
 import android.support.annotation.DrawableRes;
 import android.widget.ImageView;
-import com.funckyhacker.fileexplorer.GlideApp;
 import com.funckyhacker.fileexplorer.R;
+import com.funckyhacker.fileexplorer.di.GlideApp;
 import java.io.File;
 
 public class BindingAdapters {

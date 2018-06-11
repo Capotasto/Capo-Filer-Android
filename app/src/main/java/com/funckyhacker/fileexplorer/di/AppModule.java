@@ -1,6 +1,6 @@
 package com.funckyhacker.fileexplorer.di;
 
-import com.funckyhacker.fileexplorer.PageManger;
+import com.funckyhacker.fileexplorer.util.PageManger;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;

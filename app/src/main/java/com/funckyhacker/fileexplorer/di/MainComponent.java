@@ -1,6 +1,6 @@
 package com.funckyhacker.fileexplorer.di;
 
-import com.funckyhacker.fileexplorer.MainActivity;
+import com.funckyhacker.fileexplorer.view.main.MainActivity;
 import dagger.Subcomponent;
 import dagger.android.AndroidInjector;
 
