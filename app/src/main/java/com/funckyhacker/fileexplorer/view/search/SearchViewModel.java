@@ -1,6 +1,6 @@
 package com.funckyhacker.fileexplorer.view.search;
 
-import com.funckyhacker.fileexplorer.MainLinearAdapter;
+import com.funckyhacker.fileexplorer.view.adapter.MainLinearAdapter;
 import java.io.File;
 import java.util.List;
 import rx.Observable;

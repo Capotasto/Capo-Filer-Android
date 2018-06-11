@@ -1,4 +1,4 @@
-package com.funckyhacker.fileexplorer;
+package com.funckyhacker.fileexplorer.view.main;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -6,6 +6,10 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import com.funckyhacker.fileexplorer.BR;
+import com.funckyhacker.fileexplorer.view.adapter.MainGridAdapter;
+import com.funckyhacker.fileexplorer.view.adapter.MainLinearAdapter;
+import com.funckyhacker.fileexplorer.util.PageManger;
 import com.funckyhacker.fileexplorer.util.FileUtils;
 import java.io.File;
 import java.util.Arrays;

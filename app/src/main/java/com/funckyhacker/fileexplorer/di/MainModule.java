@@ -1,9 +1,9 @@
 package com.funckyhacker.fileexplorer.di;
 
 import android.app.Activity;
-import com.funckyhacker.fileexplorer.MainActivity;
-import com.funckyhacker.fileexplorer.MainViewModel;
-import com.funckyhacker.fileexplorer.MainViewModelImpl;
+import com.funckyhacker.fileexplorer.view.main.MainActivity;
+import com.funckyhacker.fileexplorer.view.main.MainViewModel;
+import com.funckyhacker.fileexplorer.view.main.MainViewModelImpl;
 import dagger.Binds;
 import dagger.Module;
 import dagger.android.ActivityKey;
