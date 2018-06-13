@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     private val rootFiles: List<File>?
         get() {
-            if (!FileUtils.isExternalStorageReadable() || !FileUtils.isExternalStorageWritable()) {
+            if (!FileUtils.isExternalStorageReadable || !FileUtils.isExternalStorageWritable) {
                 MaterialDialog.Builder(this)
                         .positiveText(android.R.string.ok)
                         .negativeText(android.R.string.cancel)
@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity(), MainView {
             return
         }
         val file = data.extras.getSerializable(SearchActivity.EXTRA_FILE) as File
-        viewModel.setFilesToList(viewModel.currentPath)
+        viewModel.setFilesToList(file.absolutePath)
         viewModel.setData(Arrays.asList(*file.listFiles()))
     }
 

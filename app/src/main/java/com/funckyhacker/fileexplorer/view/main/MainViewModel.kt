@@ -11,7 +11,7 @@ import java.io.File
 abstract class MainViewModel : BaseObservable() {
 
     @get:Bindable
-    abstract var currentPath: String?
+    abstract var currentPath: String
 
     abstract val pageSize: Int
 
@@ -30,7 +30,7 @@ abstract class MainViewModel : BaseObservable() {
 
     abstract fun setData(files: List<File>?)
 
-    abstract fun setFilesToList(name: String?)
+    abstract fun setFilesToList(name: String)
 
     abstract fun setFilesToList(file: File)
 
