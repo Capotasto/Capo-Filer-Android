@@ -24,7 +24,7 @@ constructor(private val pageManger: PageManger) : MainViewModel() {
     override lateinit var gridAdapter: MainGridAdapter
         private set
 
-    override var currentPath: String? = null
+    override var currentPath: String = ""
         set(currentPath) {
             field = currentPath
             notifyPropertyChanged(BR.currentPath)
@@ -46,7 +46,7 @@ constructor(private val pageManger: PageManger) : MainViewModel() {
         this.view = view
         linearAdapter = MainLinearAdapter()
         gridAdapter = MainGridAdapter()
-        view.setAdapter(linearAdapter!!)
+        view.setAdapter(linearAdapter)
     }
 
     override fun setData(files: List<File>?) {
@@ -55,8 +55,7 @@ constructor(private val pageManger: PageManger) : MainViewModel() {
         gridAdapter.setData(files)
     }
 
-    override fun setFilesToList(name: String?) {
-        name ?: return
+    override fun setFilesToList(name: String) {
         val file = FileUtils.getFilesFromName(name) ?: return
         pageManger.push(currentPath)
         currentPath = file.absolutePath

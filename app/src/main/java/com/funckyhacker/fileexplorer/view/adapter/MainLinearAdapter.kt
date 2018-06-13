@@ -32,10 +32,10 @@ class MainLinearAdapter : RecyclerView.Adapter<MainLinearAdapter.ViewHolder>() {
     }
 
     class ViewHolder(private val binding: ItemMainLinearBinding) : RecyclerView.ViewHolder(binding.root) {
-        private var file: File? = null
+        private lateinit var file: File
 
         val modified: String
-            get() = DateUtils.getItemDate(file!!.lastModified())
+            get() = DateUtils.getItemDate(file.lastModified())
 
         fun bind(file: File) {
             this.file = file
