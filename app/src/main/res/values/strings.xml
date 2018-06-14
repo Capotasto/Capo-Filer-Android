@@ -11,6 +11,7 @@
     <string name="menu_sort_by_name">Sort by Name</string>
     <string name="menu_sort_by_date">Sort by Date</string>
     <string name="menu_search">Search</string>
+    <string name="error_msg_sdcard">Do you have your SD card? Cannot access your SD card.</string>
 
 
     <string name="permission_storage_denied">Storage access permissions were denied. Please consider granting it in order to access your data!</string>

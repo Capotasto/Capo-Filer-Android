@@ -3,8 +3,10 @@ package com.funckyhacker.fileexplorer.view.main
 import android.content.ContentResolver
 import android.content.Intent
 import android.net.Uri
+import android.os.Environment
 import android.text.TextUtils
 import com.funckyhacker.fileexplorer.BR
+import com.funckyhacker.fileexplorer.R
 import com.funckyhacker.fileexplorer.util.FileUtils
 import com.funckyhacker.fileexplorer.util.PageManger
 import com.funckyhacker.fileexplorer.view.adapter.MainGridAdapter
@@ -15,6 +17,18 @@ import javax.inject.Inject
 
 class MainViewModelImpl @Inject
 constructor(private val pageManger: PageManger) : MainViewModel() {
+
+    override val rootFiles: List<File>?
+        get() {
+            if (!FileUtils.isExternalStorageReadable || !FileUtils.isExternalStorageWritable) {
+                view.showErrorDialog(R.string.error_msg_sdcard)
+                return null
+            }
+            if (TextUtils.isEmpty(currentPath)) {
+                currentPath = Environment.getExternalStorageDirectory().path
+            }
+            return FileUtils.getFilesFromDir(File(currentPath))
+        }
 
     private lateinit var view: MainView
 

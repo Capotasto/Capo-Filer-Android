@@ -23,16 +23,16 @@
             />
     </group>
 
-    <group
-        android:id="@+id/menu_bottom"
-        android:checkableBehavior="none"
-        >
+    <!--<group-->
+        <!--android:id="@+id/menu_bottom"-->
+        <!--android:checkableBehavior="none"-->
+        <!--&gt;-->
 
-        <item
-            android:id="@+id/drawer_item_settings"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:title="@string/nav_menu_setting"
-            >
-        </item>
-    </group>
+        <!--<item-->
+            <!--android:id="@+id/drawer_item_settings"-->
+            <!--android:icon="@drawable/ic_settings_black_24dp"-->
+            <!--android:title="@string/nav_menu_setting"-->
+            <!--&gt;-->
+        <!--</item>-->
+    <!--</group>-->
 </menu>
