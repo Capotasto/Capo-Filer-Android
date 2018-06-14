@@ -26,6 +26,8 @@ abstract class MainViewModel : BaseObservable() {
 
     abstract val gridAdapter: MainGridAdapter
 
+    abstract val rootFiles : List<File>?
+
     abstract fun init(view: MainView)
 
     abstract fun setData(files: List<File>?)

@@ -7,6 +7,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.Environment
+import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
@@ -16,7 +17,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
-import android.text.TextUtils
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -49,42 +49,37 @@ class MainActivity : AppCompatActivity(), MainView {
         private const val REQUEST = 1
     }
 
-    @Inject lateinit var viewModel: MainViewModel
+    @Inject
+    lateinit var viewModel: MainViewModel
 
-    private var binding: ActivityMainBinding? = null
-    private var menu: Menu? = null
-    private var linearLayoutManager: LinearLayoutManager? = null
-    private var dividerItemDecoration: DividerItemDecoration? = null
-
-    private val rootFiles: List<File>?
-        get() {
-            if (!FileUtils.isExternalStorageReadable || !FileUtils.isExternalStorageWritable) {
-                MaterialDialog.Builder(this)
-                        .positiveText(android.R.string.ok)
-                        .negativeText(android.R.string.cancel)
-                        .build()
-            }
-            if (TextUtils.isEmpty(viewModel.currentPath)) {
-                viewModel.currentPath = Environment.getExternalStorageDirectory().path
-            }
-            val files = FileUtils.getFilesFromDir(File(viewModel.currentPath))
-            return files
-        }
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var menu: Menu
+    private val linearLayoutManager: LinearLayoutManager by lazy {
+        LinearLayoutManager(this)
+    }
+    private val dividerItemDecoration: DividerItemDecoration by lazy {
+        DividerItemDecoration(this, linearLayoutManager.orientation)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         AndroidInjection.inject(this)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding!!.viewModel = viewModel
-        setSupportActionBar(binding!!.toolBar)
+        binding.viewModel = viewModel
+        setSupportActionBar(binding.toolBar)
         val actionbar = supportActionBar
         actionbar!!.setDisplayHomeAsUpEnabled(true)
         actionbar.setHomeButtonEnabled(true)
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_white_24dp)
         viewModel.init(this)
-        viewModel.setData(rootFiles)
         setLinearLayoutManager()
         initDrawer()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        enableAccessStorageWithPermissionCheck()
+        viewModel.setData(viewModel.rootFiles)
     }
 
     override fun onStart() {
@@ -122,11 +117,11 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> {
-                binding!!.drawerLayout.openDrawer(GravityCompat.START)
+                binding.drawerLayout.openDrawer(GravityCompat.START)
                 return true
             }
             R.id.switch_layout -> {
-                val switchMenu = menu!!.getItem(0)
+                val switchMenu = menu.getItem(0)
                 if (viewModel.layoutType == LAYOUT_LIST) {
                     switchMenu.icon = ContextCompat.getDrawable(this, R.drawable.ic_view_list_black_24dp)
                     setGridLayoutManager()
@@ -137,11 +132,11 @@ class MainActivity : AppCompatActivity(), MainView {
                 return true
             }
             R.id.menu_sort_by_name -> {
-                viewModel.setData(FileUtils.getSortedListByName(rootFiles))
+                viewModel.setData(FileUtils.getSortedListByName(viewModel.rootFiles))
                 return true
             }
             R.id.menu_sort_by_date -> {
-                viewModel.setData(FileUtils.getSortedListByDate(rootFiles))
+                viewModel.setData(FileUtils.getSortedListByDate(viewModel.rootFiles))
                 return true
             }
             R.id.menu_search -> {
@@ -197,11 +192,11 @@ class MainActivity : AppCompatActivity(), MainView {
             }
         })
 
-        binding!!.navView.setNavigationItemSelectedListener { item ->
+        binding.navView.setNavigationItemSelectedListener { item ->
             // set item as selected to persist highlight
             item.isChecked = true
             // close drawer when item is tapped
-            binding!!.drawerLayout.closeDrawers()
+            binding.drawerLayout.closeDrawers()
             when (item.itemId) {
                 R.id.nav_download -> viewModel.setFilesToList(Environment.DIRECTORY_DOWNLOADS)
                 R.id.nav_picture -> viewModel.setFilesToList(Environment.DIRECTORY_PICTURES)
@@ -230,7 +225,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun setAdapter(adapter: MainLinearAdapter) {
-        binding!!.listView.adapter = adapter
+        binding.listView.adapter = adapter
     }
 
     override fun startActivity(intent: Intent) {
@@ -243,25 +238,29 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun showSnackBar(message: String) {
-        val snackBar = Snackbar.make(binding!!.root, message, Snackbar.LENGTH_SHORT)
+        val snackBar = Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT)
         snackBar.show()
+    }
+
+    override fun showErrorDialog(@StringRes messageId: Int) {
+        MaterialDialog.Builder(this)
+                .title(messageId)
+                .positiveText(android.R.string.ok)
+                .negativeText(android.R.string.cancel)
+                .build()
     }
 
     private fun setLinearLayoutManager() {
         viewModel.layoutType = LAYOUT_LIST
-        if (linearLayoutManager == null){
-            linearLayoutManager = LinearLayoutManager(this)
-        }
-        binding!!.listView.layoutManager = linearLayoutManager
-        binding!!.listView.adapter = viewModel.linearAdapter
-        dividerItemDecoration = DividerItemDecoration(this, linearLayoutManager!!.orientation)
-        binding!!.listView.addItemDecoration(dividerItemDecoration)
+        binding.listView.layoutManager = linearLayoutManager
+        binding.listView.adapter = viewModel.linearAdapter
+        binding.listView.addItemDecoration(dividerItemDecoration)
     }
 
     private fun setGridLayoutManager() {
         viewModel.layoutType = LAYOUT_GRID
-        binding!!.listView.layoutManager = GridLayoutManager(this, 3)
-        binding!!.listView.adapter = viewModel.gridAdapter
-        binding!!.listView.removeItemDecoration(dividerItemDecoration)
+        binding.listView.layoutManager = GridLayoutManager(this, 3)
+        binding.listView.adapter = viewModel.gridAdapter
+        binding.listView.removeItemDecoration(dividerItemDecoration)
     }
 }
