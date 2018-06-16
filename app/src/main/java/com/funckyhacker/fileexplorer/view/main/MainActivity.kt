@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     private fun initDrawer() {
-        binding!!.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
+        binding.drawerLayout.addDrawerListener(object : DrawerLayout.DrawerListener {
 
             override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
                 //Timber.d("onDrawerSlide");
