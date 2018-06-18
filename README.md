@@ -6,8 +6,7 @@ A simple, easy and ligth file management app for Android
 
 |Top|Drawer|Icons|
 |---|---|---|
-|![TOP](https://raw.github.com/Capotasto/File-Explorer-Android/blob/screen-shot/screenShot/device-2018-06-16-112842.png "")|![TOP](https://raw.github.com/Capotasto/File-Explorer-Android/blob/screen-shot/screenShot/device-2018-06-16-112853.png "")|![TOP](https://raw.github.com/Capotasto/File-Explorer-Android/blob/screen-shot/screenShot/device-2018-06-16-112656.png "")|
-
+|![TOP](https://raw.githubusercontent.com/Capotasto/File-Explorer-Android/screen-shot/screenShot/device-2018-06-16-112842.png "")|![TOP](https://raw.githubusercontent.com/Capotasto/File-Explorer-Android/screen-shot/screenShot/device-2018-06-16-112853.png "")|![TOP](https://raw.githubusercontent.com/Capotasto/File-Explorer-Android/screen-shot/screenShot/device-2018-06-16-112656.png "")|
 
 ## Getting Started
 
