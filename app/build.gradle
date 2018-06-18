@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.funckyhacker.fileexplorer"
+        applicationId "com.funckyhacker.capofiler"
         minSdkVersion 23
         targetSdkVersion 27
         versionCode 2
