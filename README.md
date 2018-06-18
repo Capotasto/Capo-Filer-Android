@@ -18,9 +18,9 @@ git clone https://github.com/Capotasto/File-Explorer-Android.git
 
 And open Android Studio, open this project and run !
 
-### You may need
+### You must need
 
-If you want to build as release ver, create a `signingConfigs/release.gradle` into project root.
+Before building app, create a `signingConfigs/release.gradle` into project root.
 Then add below code and set your keystore information.
 
 ```
