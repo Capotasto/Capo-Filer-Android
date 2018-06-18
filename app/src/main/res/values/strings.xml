@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FileExplorer</string>
+    <string name="app_name">Capo Filer</string>
 
     <string name="nav_menu_download">Download</string>
     <string name="nav_menu_picture">Picture</string>
