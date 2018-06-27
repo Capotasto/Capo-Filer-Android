@@ -8,15 +8,21 @@ A simple, easy and ligth file management app for Android
 |---|---|---|
 |![TOP](https://raw.githubusercontent.com/Capotasto/File-Explorer-Android/images/images/device-2018-06-16-112842.png "")|![TOP](https://raw.githubusercontent.com/Capotasto/File-Explorer-Android/images/images/device-2018-06-16-112853.png "")|![TOP](https://raw.githubusercontent.com/Capotasto/File-Explorer-Android/images/images/device-2018-06-16-112656.png "")|
 
-## Getting Started
+## 
 
-Get this projcet and give it a shot!
+## Third party library
+- RxJava
+- RxAndroid
+- RxLifecycle
+- Dagger2
+- Timber
+- Stetho
+- Material Dialog
+- Commons IO
+- Event Bus
+- Glide
+- Permission Dispatcher
 
-```
-git clone https://github.com/Capotasto/File-Explorer-Android.git
-```
-
-And open Android Studio, open this project and run !
 
 ### You must need
 
@@ -33,10 +39,6 @@ signingConfigs {
   }
 }
 ```
-
-## Running the tests
-
-There are not test in this project yet!
 
 ## Authors
 
